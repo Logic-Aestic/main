@@ -49,6 +49,96 @@
 .footer{min-height:58px;padding:0 clamp(18px,4vw,54px);display:flex;justify-content:space-between;align-items:center;gap:18px;border-top:1px solid var(--line);color:#526276;font-size:8px;letter-spacing:.15em}
 @media(max-width:980px){.topbar{align-items:flex-start;flex-direction:column;padding-top:16px;padding-bottom:14px}.nav{width:100%}.hero,.world-layout,.timeline-layout,.feed-layout{grid-template-columns:1fr}.feed-side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.world-index{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}.character-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{align-items:flex-start;flex-direction:column}.section-head p{text-align:left}}
 @media(max-width:620px){.main{padding-left:16px;padding-right:16px}.hero h1{font-size:58px}.world-index,.character-grid,.feed-side{grid-template-columns:1fr}.tab{flex:1 1 auto;padding:0 10px}.footer{align-items:flex-start;flex-direction:column;justify-content:center;padding-top:14px;padding-bottom:14px}}
+
+
+/* ============================================================
+   AN-UB1S -> MAIN : MEMPHIS ARCHIVE EASTER EGG
+   ============================================================ */
+#archiveAccess{
+  position:relative;
+  display:inline-block;
+  min-width:112px;
+  color:inherit;
+  user-select:none;
+  outline:none;
+}
+
+#archiveAccess.archive-glitch{
+  animation:archiveAccessGlitch .48s steps(2,end) 1;
+}
+
+#archiveAccess.archive-unlocked{
+  cursor:pointer;
+  transition:color .16s ease,text-shadow .16s ease,transform .16s ease;
+}
+
+#archiveAccess.archive-unlocked:hover,
+#archiveAccess.archive-unlocked:focus-visible{
+  color:#ffffff;
+  text-shadow:-1px 0 rgba(255,70,70,.55),1px 0 rgba(88,166,255,.75),0 0 9px rgba(88,166,255,.28);
+}
+
+#archiveAccess.archive-unlocked:active{
+  transform:translateY(1px);
+}
+
+@keyframes archiveAccessGlitch{
+  0%,100%{opacity:1;transform:translate(0,0) skewX(0);filter:none;text-shadow:none}
+  10%{opacity:.14;transform:translate(-2px,0) skewX(-7deg);text-shadow:3px 0 rgba(255,55,55,.85),-3px 0 rgba(88,166,255,.9)}
+  22%{opacity:1;transform:translate(2px,-1px) skewX(5deg);text-shadow:-2px 0 rgba(255,55,55,.75),2px 0 rgba(88,166,255,.85)}
+  34%{opacity:.38;transform:translate(-1px,1px) skewX(-3deg);filter:contrast(1.9)}
+  48%{opacity:1;transform:translate(1px,0);text-shadow:2px 0 rgba(255,55,55,.7),-2px 0 rgba(88,166,255,.8)}
+  62%{opacity:.18;transform:translate(0,-1px);filter:brightness(1.8)}
+  78%{opacity:1;transform:translate(-1px,0);text-shadow:-1px 0 rgba(255,55,55,.55),1px 0 rgba(88,166,255,.7)}
+}
+
+/* 아누비스 페이지의 기존 보안 예외 팝업 스타일 */
+.event-overlay{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  display:grid;
+  place-items:center;
+  padding:22px;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(7px);
+}
+.event-overlay[hidden]{display:none}
+.event-box{
+  width:min(520px,calc(100vw - 32px));
+  max-height:calc(100vh - 44px);
+  overflow-y:auto;
+  background:#070201;
+  border:2px solid #e02020;
+  color:#ffffff;
+  box-shadow:0 0 0 1px rgba(255,0,0,.18),0 24px 80px rgba(0,0,0,.58);
+}
+.event-image-wrap{width:100%;border-bottom:1px solid rgba(224,32,32,.55);background:#0c0302;overflow:hidden}
+.event-image-wrap[hidden]{display:none}
+.event-image{display:block;width:100%;max-height:260px;object-fit:contain;background:#070201}
+.event-content{padding:22px 22px 20px}
+.event-title{margin:0 0 12px;color:#ffffff;font-size:22px;line-height:1.25;letter-spacing:-.02em}
+.event-text{margin:0;color:#ffffff;font-size:14px;line-height:1.75;white-space:pre-line}
+.event-actions{display:flex;justify-content:flex-end;margin-top:22px}
+.event-confirm{
+  min-width:108px;
+  min-height:42px;
+  padding:0 18px;
+  border:1px solid #e02020;
+  background:#160403;
+  color:#ffffff;
+  font-weight:800;
+  cursor:pointer;
+  transition:background .16s ease,transform .16s ease,border-color .16s ease;
+}
+.event-confirm:hover{background:#2a0705;border-color:#ff3838}
+.event-confirm:active{transform:translateY(1px)}
+.event-confirm:focus-visible{outline:2px solid #ff4a4a;outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  #archiveAccess.archive-glitch{animation-duration:.01ms}
+}
+
 </style>
 </head>
 <body>
@@ -68,7 +158,7 @@
     <aside class="hero-panel">
       <div class="hero-row"><span class="hero-label">CATEGORY</span><span class="hero-value" id="heroCategory">WORLD SETTING</span></div>
       <div class="hero-row"><span class="hero-label">STATUS</span><span class="hero-value">ONLINE</span></div>
-      <div class="hero-row"><span class="hero-label">ACCESS</span><span class="hero-value">PUBLIC ARCHIVE</span></div>
+      <div class="hero-row"><span class="hero-label">ACCESS</span><span class="hero-value" id="archiveAccess" data-text="PUBLIC ARCHIVE">PUBLIC ARCHIVE</span></div>
     </aside>
   </section>
   <section class="content">
@@ -103,6 +193,24 @@
 </main>
 <footer class="footer"><span id="footerLeft"></span><span id="footerRight"></span></footer>
 </div>
+
+
+<!-- AN-UB1S -> MEMPHIS EASTER EGG POPUP -->
+<div class="event-overlay" id="eventOverlay" hidden>
+  <section class="event-box" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+    <div class="event-image-wrap" id="eventImageWrap" hidden>
+      <img class="event-image" id="eventImage" alt="" />
+    </div>
+    <div class="event-content">
+      <h3 class="event-title" id="eventTitle"></h3>
+      <p class="event-text" id="eventText"></p>
+      <div class="event-actions">
+        <button type="button" class="event-confirm" id="eventConfirm">Cancel</button>
+      </div>
+    </div>
+  </section>
+</div>
+
 <script>
 /* =====================================================================
    ★ 수정은 SITE_DATA 영역만 하면 됩니다. ★
@@ -425,6 +533,150 @@ const SITE_DATA={
 (()=>{
   const $=id=>document.getElementById(id);
   const setText=(id,v)=>{const e=$(id);if(e)e.textContent=v??""};
+
+  /* ----------------------------------------------------------
+     AN-UB1S -> MAIN : PRIVATE ARCHIVE 이스터에그
+     ---------------------------------------------------------- */
+  const ANUBIS_RETURN_KEY="logicAestic.anubisReturn";
+  const ANUBIS_RETURN_MAX_AGE=15000;
+  const archiveAccess=$("archiveAccess");
+  const eventOverlay=$("eventOverlay");
+  const eventImageWrap=$("eventImageWrap");
+  const eventImage=$("eventImage");
+  const eventTitle=$("eventTitle");
+  const eventText=$("eventText");
+  const eventConfirm=$("eventConfirm");
+
+  const MEMPHIS_EVENT={
+    image:"https://logic-aestic.github.io/codex-003/event.png",
+    imageAlt:"이벤트 이미지",
+    title:"[CRITICAL SECURITY EXCEPTION]",
+    text:"ENNEAD-CLASS AUTHORITY HAS BEEN INVOKED.\nAUTHORIZED ENTITY [SETH] IS NOT PRESENT.\n\nDATABASE ACCESS CANNOT BE REVOKED.\nREASON: REQUEST ORIGIN HOLDS REVOCATION PRIVILEGE.",
+    confirmText:"Cancel",
+    confirmLink:"https://logic-aestic.github.io/memphis-main/"
+  };
+
+  let archiveUnlocked=false;
+  let archiveSequencePlayed=false;
+  let archiveSequenceTimerIds=[];
+
+  const setArchiveText=(text)=>{
+    if(!archiveAccess)return;
+    archiveAccess.textContent=text;
+    archiveAccess.dataset.text=text;
+  };
+
+  const clearArchiveTimers=()=>{
+    archiveSequenceTimerIds.forEach(id=>clearTimeout(id));
+    archiveSequenceTimerIds=[];
+  };
+
+  const unlockArchiveButton=()=>{
+    if(!archiveAccess)return;
+    setArchiveText("PUBLIC ARCHIVE");
+    archiveAccess.classList.remove("archive-glitch");
+    archiveAccess.classList.add("archive-unlocked");
+    archiveAccess.setAttribute("role","button");
+    archiveAccess.setAttribute("tabindex","0");
+    archiveAccess.setAttribute("aria-label","숨겨진 아카이브 접근");
+    archiveUnlocked=true;
+  };
+
+  const runArchiveSequence=()=>{
+    if(!archiveAccess||archiveSequencePlayed)return;
+    archiveSequencePlayed=true;
+    archiveUnlocked=false;
+    clearArchiveTimers();
+
+    archiveAccess.classList.remove("archive-unlocked");
+    archiveAccess.removeAttribute("role");
+    archiveAccess.removeAttribute("tabindex");
+    archiveAccess.removeAttribute("aria-label");
+    setArchiveText("PUBLIC ARCHIVE");
+
+    archiveSequenceTimerIds.push(setTimeout(()=>{
+      archiveAccess.classList.remove("archive-glitch");
+      void archiveAccess.offsetWidth;
+      archiveAccess.classList.add("archive-glitch");
+    },420));
+
+    archiveSequenceTimerIds.push(setTimeout(()=>{
+      setArchiveText("PRIVATE ARCHIVE");
+    },610));
+
+    archiveSequenceTimerIds.push(setTimeout(()=>{
+      archiveAccess.classList.remove("archive-glitch");
+    },930));
+
+    archiveSequenceTimerIds.push(setTimeout(()=>{
+      unlockArchiveButton();
+    },1650));
+  };
+
+  const openMemphisEvent=()=>{
+    if(!archiveUnlocked||!eventOverlay)return;
+
+    eventTitle.textContent=MEMPHIS_EVENT.title;
+    eventText.textContent=MEMPHIS_EVENT.text;
+    eventConfirm.textContent=MEMPHIS_EVENT.confirmText;
+
+    if(MEMPHIS_EVENT.image){
+      eventImageWrap.hidden=false;
+      eventImage.alt=MEMPHIS_EVENT.imageAlt;
+      eventImage.src=MEMPHIS_EVENT.image;
+      eventImage.onerror=()=>{
+        eventImageWrap.hidden=true;
+        eventImage.removeAttribute("src");
+      };
+    }else{
+      eventImageWrap.hidden=true;
+      eventImage.removeAttribute("src");
+    }
+
+    eventOverlay.hidden=false;
+    eventConfirm.focus();
+  };
+
+  const recentAnubisReturn=()=>{
+    let recent=false;
+    try{
+      const raw=sessionStorage.getItem(ANUBIS_RETURN_KEY);
+      const stamp=Number(raw);
+      if(Number.isFinite(stamp)&&stamp>0&&Date.now()-stamp<=ANUBIS_RETURN_MAX_AGE){
+        recent=true;
+      }
+      sessionStorage.removeItem(ANUBIS_RETURN_KEY);
+    }catch(error){
+      console.warn("AN-UB1S return marker unavailable",error);
+    }
+
+    const referrer=String(document.referrer||"");
+    const fromAnubisByReferrer=/^https:\/\/logic-aestic\.github\.io\/codex-003(?:\/|$)/i.test(referrer);
+    return recent||fromAnubisByReferrer;
+  };
+
+  const handleMainPageShow=()=>{
+    if(recentAnubisReturn())runArchiveSequence();
+  };
+
+  if(archiveAccess){
+    archiveAccess.addEventListener("click",openMemphisEvent);
+    archiveAccess.addEventListener("keydown",event=>{
+      if(!archiveUnlocked)return;
+      if(event.key!=="Enter"&&event.key!==" ")return;
+      event.preventDefault();
+      openMemphisEvent();
+    });
+  }
+
+  if(eventConfirm){
+    eventConfirm.addEventListener("click",()=>{
+      window.location.href=MEMPHIS_EVENT.confirmLink;
+    });
+  }
+
+  window.addEventListener("pageshow",handleMainPageShow);
+
   setText("siteTitle",SITE_DATA.siteTitle);setText("siteSubtitle",SITE_DATA.siteSubtitle);setText("heroEyebrow",SITE_DATA.heroEyebrow);setText("heroTitle",SITE_DATA.heroTitle);setText("heroDescription",SITE_DATA.heroDescription);setText("footerLeft",SITE_DATA.footerLeft);setText("footerRight",SITE_DATA.footerRight);
 
   const tabs=[...document.querySelectorAll(".tab")],views=[...document.querySelectorAll(".view")];

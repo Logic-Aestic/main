@@ -549,6 +549,7 @@ const SITE_DATA={
 
   const MEMPHIS_EVENT={
     image:"https://logic-aestic.github.io/codex-003/event.png",
+    audio:"https://logic-aestic.github.io/codex-003/voice_01.mp3",
     imageAlt:"이벤트 이미지",
     title:"[CRITICAL SECURITY EXCEPTION]",
     text:"ENNEAD-CLASS AUTHORITY HAS BEEN INVOKED.\nAUTHORIZED ENTITY [SETH] IS NOT PRESENT.\n\nDATABASE ACCESS CANNOT BE REVOKED.\nREASON: REQUEST ORIGIN HOLDS REVOCATION PRIVILEGE.",
@@ -557,6 +558,7 @@ const SITE_DATA={
   };
 
   let archiveUnlocked=false;
+  let memphisEventAudio=null;
   let archiveSequencePlayed=false;
   let archiveSequenceTimerIds=[];
 
@@ -619,6 +621,22 @@ const SITE_DATA={
     eventTitle.textContent=MEMPHIS_EVENT.title;
     eventText.textContent=MEMPHIS_EVENT.text;
     eventConfirm.textContent=MEMPHIS_EVENT.confirmText;
+
+    // 이스터에그 팝업이 열린 순간 음성을 1회 재생합니다.
+    // 버튼 클릭으로 실행되므로 브라우저 자동재생 제한에도 비교적 안정적입니다.
+    if(MEMPHIS_EVENT.audio){
+      if(memphisEventAudio){
+        memphisEventAudio.pause();
+        memphisEventAudio.currentTime=0;
+      }
+
+      memphisEventAudio=new Audio(MEMPHIS_EVENT.audio);
+      memphisEventAudio.preload="auto";
+      memphisEventAudio.volume=1;
+      memphisEventAudio.play().catch(error=>{
+        console.warn("[MEMPHIS EVENT] 음성 재생 실패",error);
+      });
+    }
 
     if(MEMPHIS_EVENT.image){
       eventImageWrap.hidden=false;
